@@ -4,12 +4,18 @@ from ._abstract import AbstractFolderPicker
 
 
 class LinuxFolderPicker(AbstractFolderPicker):
-    def pick_folder(self) -> str | None:
+    def pick_folder(
+        self, title="Select a folder", icon: str | None = None
+    ) -> str | None:
         """
         Opens a folder picker dialog on Linux using zenity/kdialog/yad or falls back to manual input.
 
+        Args:
+            title (str): Title of the folder picker dialog.
+            icon (str | None): Path to icon file to use for the dialog window.
+
         Returns:
-            str: The path of the selected folder.
+            str | None: The path of the selected folder or None if cancelled.
         """
 
         def run_cmd(cmd):
@@ -23,21 +29,36 @@ class LinuxFolderPicker(AbstractFolderPicker):
                 return None
 
         if shutil.which("zenity"):
-            folder = run_cmd(
-                ["zenity", "--file-selection", "--directory", "--title=Select a folder"]
-            )
+            cmd = [
+                "zenity",
+                "--file-selection",
+                "--directory",
+                f"--title={title}",
+            ]
+            if icon:
+                cmd.append(f"--window-icon={icon}")
+            folder = run_cmd(cmd)
             if folder:
                 return folder
 
         elif shutil.which("kdialog"):
-            folder = run_cmd(["kdialog", "--getexistingdirectory", "~"])
+            cmd = ["kdialog", "--getexistingdirectory", "~"]
+            if icon:
+                cmd.append(f"--icon={icon}")
+            folder = run_cmd(cmd)
             if folder:
                 return folder
 
         elif shutil.which("yad"):
-            folder = run_cmd(
-                ["yad", "--file-selection", "--directory", "--title=Select a folder"]
-            )
+            cmd = [
+                "yad",
+                "--file-selection",
+                "--directory",
+                f"--title={title}",
+            ]
+            if icon:
+                cmd.append(f"--window-icon={icon}")
+            folder = run_cmd(cmd)
             if folder:
                 return folder
         else:
@@ -45,4 +66,4 @@ class LinuxFolderPicker(AbstractFolderPicker):
                 "You need to install zenity, kdialog, or yad to use this package."
             )
 
-        return folder if folder else None
+        return None
