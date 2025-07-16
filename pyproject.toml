@@ -1,10 +1,9 @@
 [project]
-name = "cross_device_folder_picker"
-version = "0.1.0"
+name = "cross_platform_folder_picker"
+version = "0.0.1"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python",
@@ -20,13 +19,13 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/baseplate-admin/django-hstore-widget"
-Repository = "https://github.com/baseplate-admin/django-hstore-widget"
-"Bug Tracker" = "https://github.com/baseplate-admin/django-hstore-widget/issues"
+Homepage = "https://github.com/baseplate-admin/Cross-Platform-Folder-Picker"
+Repository = "https://github.com/baseplate-admin/Cross-Platform-Folder-Picker"
+"Bug Tracker" = "https://github.com/baseplate-admin/Cross-Platform-Folder-Picker/issues"
 
 [tool.hatch.build]
-include = ['src/cross_device_folder_picker/**/*']
-packages = ["src/cross_device_folder_picker"]
+include = ['src/cross_platform_folder_picker/**/*']
+packages = ["src/cross_platform_folder_picker"]
 directory = 'dist'
 
 [dependency-groups]

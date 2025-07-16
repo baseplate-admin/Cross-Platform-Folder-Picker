@@ -29,18 +29,20 @@ class LinuxFolderPicker(AbstractFolderPicker):
             if folder:
                 return folder
 
-        if shutil.which("kdialog"):
+        elif shutil.which("kdialog"):
             folder = run_cmd(["kdialog", "--getexistingdirectory", "~"])
             if folder:
                 return folder
 
-        if shutil.which("yad"):
+        elif shutil.which("yad"):
             folder = run_cmd(
                 ["yad", "--file-selection", "--directory", "--title=Select a folder"]
             )
             if folder:
                 return folder
+        else:
+            raise RuntimeError(
+                "You need to install zenity, kdialog, or yad to use this package."
+            )
 
-        # Fallback: ask user to input folder path manually in terminal
-        folder = input("Enter folder path manually: ").strip()
         return folder if folder else None
