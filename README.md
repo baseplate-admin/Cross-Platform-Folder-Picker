@@ -1,0 +1,1 @@
+[Example GIF](https://raw.githubusercontent.com/baseplate-admin/Cross-Platform-Folder-Picker/refs/heads/master/assets/example.gif)
