@@ -24,8 +24,6 @@ Repository = "https://github.com/baseplate-admin/Cross-Platform-Folder-Picker"
 "Bug Tracker" = "https://github.com/baseplate-admin/Cross-Platform-Folder-Picker/issues"
 
 [tool.hatch.build]
-include = ['src/cross_platform_folder_picker/**/*']
-packages = ["src/cross_platform_folder_picker"]
 directory = 'dist'
 
 [dependency-groups]
