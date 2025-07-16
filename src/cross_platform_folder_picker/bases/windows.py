@@ -24,5 +24,9 @@ class WindowsFolderPicker(AbstractFolderPicker):
                 print(f"Warning: Unable to set icon from {icon}. Using default icon.")
 
         root.withdraw()
+        root.attributes("-topmost", True)  # Keep dialog on top
+
         folder_path = filedialog.askdirectory(title=title)
+
+        root.destroy()
         return folder_path
