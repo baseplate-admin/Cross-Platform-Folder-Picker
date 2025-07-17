@@ -1,6 +1,6 @@
 # Cross-Platform-Folder-Picker
 
-> A (near zero dependency) cross platform folder picker
+> A (near zero dependency by default) cross platform folder picker
 
 
 ![Example GIF](https://raw.githubusercontent.com/baseplate-admin/Cross-Platform-Folder-Picker/refs/heads/master/assets/example.gif)
