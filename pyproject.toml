@@ -35,3 +35,4 @@ build-backend = "hatchling.build"
 
 [project.optional-dependencies]
 qt = ["PySide6"]
+gtk = ["PyGObject"]
