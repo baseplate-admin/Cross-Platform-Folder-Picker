@@ -3,23 +3,27 @@
 > A (near zero dependency by default) cross platform folder picker
 
 
+[![Downloads](https://static.pepy.tech/badge/cross-platform-folder-picker)](https://pepy.tech/project/cross-platform-folder-picker)  [![Pypi Badge](https://img.shields.io/pypi/v/cross-platform-folder-picker.svg)](https://pypi.org/project/cross-platform-folder-picker/)
+
 ![Example GIF](https://raw.githubusercontent.com/baseplate-admin/Cross-Platform-Folder-Picker/refs/heads/master/assets/example.gif)
 
 
 # Features
 
 * Opens a folder dialog using:
-
-    - `tkinter` for windows
-    - `zenity`/`kdialog` for linux
-    - `osascript` for macOS
-
-* Customize the window and icon of the dialog
+    * Default:
+        - `tkinter` for windows
+        - `zenity`/`kdialog` for linux
+        - `osascript` for macOS
+    * Optionally:
+        - `qt`
+        - `gtk`
+* Customize the title and icon of the dialog
 
 # Installation
 
 ```shell
-pip install cross_platform_folder_picker
+pip install cross-platform-folder-picker
 ```
 
 # Usage
