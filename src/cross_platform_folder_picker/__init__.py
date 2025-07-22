@@ -1,9 +1,18 @@
 import sys
 
 try:
-    import PySide6
+    import PySide6  # type: ignore  # noqa: F401
+
+    HAS_PYSIDE6 = True
 except ImportError:
-    PySide6 = None
+    HAS_PYSIDE6 = False
+try:
+    import gi  # type: ignore  # noqa: F401
+
+    HAS_GI = True
+except ImportError:
+    gi = None
+    HAS_GI = False
 
 
 def open_folder_picker():
@@ -14,10 +23,14 @@ def open_folder_picker():
         str: The path of the selected folder.
     """
 
-    if PySide6 is not None:
-        from .bases.qt import QtFolderPicker
+    if HAS_PYSIDE6:
+        from .bases import QtFolderPicker
 
         picker = QtFolderPicker()
+    elif HAS_GI:
+        from .bases import GtkFolderPicker
+
+        picker = GtkFolderPicker()
     else:
         match sys.platform:
             case "win32":
