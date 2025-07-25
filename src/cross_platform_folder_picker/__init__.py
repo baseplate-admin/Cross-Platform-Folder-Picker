@@ -35,7 +35,7 @@ def open_folder_picker():
         match sys.platform:
             case "win32":
                 try:
-                    import tkinter
+                    import tkinter  # type: ignore  # noqa: F401
                     from .bases import TkinterFolderPicker
 
                     picker = TkinterFolderPicker()
