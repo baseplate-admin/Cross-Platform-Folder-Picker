@@ -34,5 +34,4 @@ res = open_folder_picker()
 
 # Roadmap
 
--   Investigate a better way to handle folder open dialog
--   Reduce dependency on tkinter on windows
+-   You tell me
