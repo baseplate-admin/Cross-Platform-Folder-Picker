@@ -2,7 +2,9 @@ from ._abstract import AbstractFolderPicker
 
 
 class TkinterFolderPicker(AbstractFolderPicker):
-    def pick_folder(self, title="Select a folder", icon: str | None = None) -> str:
+    def pick_folder(
+        self, title="Select a folder", icon: str | None = None
+    ) -> str | None:
         """
         Opens a folder picker dialog and returns the selected folder path.
 
@@ -29,4 +31,5 @@ class TkinterFolderPicker(AbstractFolderPicker):
         folder_path = filedialog.askdirectory(title=title)
 
         root.destroy()
-        return folder_path
+
+        return folder_path if folder_path else None

@@ -115,7 +115,7 @@ wheels = [
 
 [[package]]
 name = "cross-platform-folder-picker"
-version = "0.0.4"
+version = "0.0.5"
 source = { editable = "." }
 
 [package.optional-dependencies]
