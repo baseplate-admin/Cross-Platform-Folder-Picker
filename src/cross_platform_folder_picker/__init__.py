@@ -34,9 +34,15 @@ def open_folder_picker():
     else:
         match sys.platform:
             case "win32":
-                from .bases import WindowsFolderPicker
+                try:
+                    import tkinter  # type: ignore  # noqa: F401
+                    from .bases import TkinterFolderPicker
 
-                picker = WindowsFolderPicker()
+                    picker = TkinterFolderPicker()
+                except ImportError:
+                    from .bases import WindowsFolderPicker
+
+                    picker = WindowsFolderPicker()
             case "darwin":
                 from .bases import MacOSFolderPicker
 
