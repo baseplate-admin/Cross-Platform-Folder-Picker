@@ -336,7 +336,4 @@ class WindowsFolderPicker(AbstractFolderPicker):
         # Uninitialize COM library for this thread
         ole32.CoUninitialize()
 
-        if not folder_path:
-            raise RuntimeError("Failed to retrieve folder path.")
-
         return folder_path
