@@ -2,7 +2,9 @@ from ._abstract import AbstractFolderPicker
 
 
 class GtkFolderPicker(AbstractFolderPicker):
-    def pick_folder(self, title="Select a folder", icon: str | None = None) -> str:
+    def pick_folder(
+        self, title="Select a folder", icon: str | None = None
+    ) -> str | None:
         try:
             import gi
 
