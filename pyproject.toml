@@ -1,6 +1,6 @@
 [project]
 name = "cross_platform_folder_picker"
-version = "0.0.5"
+version = "0.0.6"
 description = " A (near zero dependency by default) cross platform folder picker"
 readme = "README.md"
 requires-python = ">=3.10"
