@@ -10,7 +10,7 @@ class QtFolderPicker(AbstractFolderPicker):
         except ImportError:
             raise ImportError(
                 "PySide6 is required for the QtFolderPicker. "
-                "Install with `pip install your-package[qt]`."
+                "Install with `pip install cross-platform-folder-picker[qt]`."
             )
 
         app = QApplication.instance()
