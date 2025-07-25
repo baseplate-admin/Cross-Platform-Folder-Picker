@@ -6,10 +6,10 @@ class GtkFolderPicker(AbstractFolderPicker):
         self, title="Select a folder", icon: str | None = None
     ) -> str | None:
         try:
-            import gi
+            import gi  # type:ignore noqa: F401
 
             gi.require_version("Gtk", "4.0")
-            from gi.repository import Gtk
+            from gi.repository import Gtk  # type:ignore noqa: F401
         except (ImportError, ValueError):
             raise ImportError(
                 "GTK 4 is required for GtkFolderPicker.\n"
@@ -23,7 +23,7 @@ class GtkFolderPicker(AbstractFolderPicker):
         use_adw = False
         try:
             gi.require_version("Adw", "1")
-            from gi.repository import Adw
+            from gi.repository import Adw  # type:ignore noqa: F401
 
             use_adw = True
         except (ImportError, ValueError):

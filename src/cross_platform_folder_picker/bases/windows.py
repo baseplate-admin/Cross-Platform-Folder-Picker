@@ -211,10 +211,6 @@ class IShellItemVtbl(ctypes.Structure):
 IShellItem._fields_ = [("lpVtbl", POINTER(IShellItemVtbl))]
 
 
-def open_folder_picker():
-    pass
-
-
 class WindowsFolderPicker(AbstractFolderPicker):
     def pick_folder(
         self, title="Select a folder", icon: str | None = None
