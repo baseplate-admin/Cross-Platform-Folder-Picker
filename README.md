@@ -8,15 +8,18 @@
 
 # Features
 
--   Opens a folder dialog using:
-    -   Default:
-        -   `tkinter` for windows (falls back to `ctypes`)
-        -   `zenity`/`kdialog` for linux
-        -   `osascript` for macOS
-    -   Optionally:
-        -   `qt`
-        -   `gtk`
--   Customize the title and icon of the dialog
+- Opens a folder dialog using:
+  - Default:
+    - `tkinter` for Windows (falls back to `ctypes`)
+    - `zenity` / `kdialog` for Linux
+    - `osascript` for macOS
+  - Optionally:
+    - `qt`
+    - `gtk`
+- Customize the dialog’s title and icon easily  
+- Uses native dialogs where possible for a familiar look & feel  
+- Falls back gracefully if native options aren’t available  
+- Super simple to use in scripts, CLI tools, or GUI apps
 
 # Installation
 
@@ -29,9 +32,10 @@ pip install cross-platform-folder-picker
 ```python
 from cross_platform_folder_picker import open_folder_picker
 
-res = open_folder_picker()
+folder = open_folder_picker()
+print(folder)  # Prints the selected folder path, or None if you cancel
 ```
 
 # Roadmap
 
--   You tell me
+- Let me know what features or improvements you'd like to see next!
