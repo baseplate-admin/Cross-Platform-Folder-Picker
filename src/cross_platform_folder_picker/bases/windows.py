@@ -72,9 +72,6 @@ class IFileOpenDialog(ctypes.Structure):
 
 LPFILEOPENDIALOG = POINTER(IFileOpenDialog)
 
-# Define vtable with methods we need (Show, SetOptions, GetOptions, GetResult)
-# We'll define only needed ones for brevity
-
 # VTable function prototypes
 # HRESULT Show(HWND hwndParent);
 ShowFunc = ctypes.WINFUNCTYPE(ctypes.HRESULT, LPFILEOPENDIALOG, wintypes.HWND)
@@ -179,7 +176,6 @@ class IFileOpenDialogVtbl(ctypes.Structure):
             ctypes.WINFUNCTYPE(ctypes.HRESULT, LPFILEOPENDIALOG, c_wchar_p),
         ),
         ("GetResult", GetResultFunc),
-        # ... (Other methods omitted)
     ]
 
 
@@ -238,12 +234,10 @@ class WindowsFolderPicker(AbstractFolderPicker):
 
         dialog = cast(pDialog, LPFILEOPENDIALOG)
 
-        # Get current options
         options = ctypes.c_ulong()
         hr = dialog.contents.lpVtbl.contents.GetOptions(dialog, byref(options))
         check_hresult(hr)
 
-        # Add pick folders flag
         new_options = options.value | FOS_PICKFOLDERS
         hr = dialog.contents.lpVtbl.contents.SetOptions(dialog, new_options)
         check_hresult(hr)
