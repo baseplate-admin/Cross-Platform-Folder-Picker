@@ -16,7 +16,7 @@ class TkinterFolderPicker(AbstractFolderPicker):
             import tkinter as tk
             from tkinter import filedialog
         except ImportError:
-            raise ImportError("`tkinter` is required for Windows folder picking.")
+            raise ImportError("`tkinter` is required for folder picking.")
 
         root = tk.Tk()
         if icon:
