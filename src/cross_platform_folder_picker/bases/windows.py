@@ -264,76 +264,67 @@ class WindowsFolderPicker(AbstractFolderPicker):
         str or None: The full path to the selected folder, or None if the user cancels.
     """
 
-    def pick_folder(
-        self, title="Select a folder", icon: str | None = None
-    ) -> str | None:
-        # Initialize COM library on this thread
-        ole32.CoInitialize(None)
+    def pick_folder(self, title="Select a folder", icon: str | None = None) -> str | None:
+        # CoInitialize can return S_FALSE if already initialized. 
+        # Only check for strict negative HRESULT errors.
+        hr = ole32.CoInitialize(None)
+        if hr < 0 and hr != -2147417850:  # RPC_E_CHANGED_MODE
+            check_hresult(hr)
 
         pDialog = c_void_p()
-
-        # Create an instance of the FileOpenDialog COM object
-        hr = ole32.CoCreateInstance(
-            byref(CLSID_FileOpenDialog),
-            None,
-            1,  # CLSCTX_INPROC_SERVER
-            byref(IID_IFileOpenDialog),
-            byref(pDialog),
-        )
-        check_hresult(hr)
-
-        # Cast the pointer to the IFileOpenDialog interface
-        dialog = cast(pDialog, LPFILEOPENDIALOG)
-
-        # Get current dialog options
-        options = ctypes.c_ulong()
-        hr = dialog.contents.lpVtbl.contents.GetOptions(dialog, byref(options))
-        check_hresult(hr)
-
-        # Add the folder picking option flag
-        new_options = options.value | FOS_PICKFOLDERS
-        hr = dialog.contents.lpVtbl.contents.SetOptions(dialog, new_options)
-        check_hresult(hr)
+        dialog = None
+        shell_item = None
+        pszName = c_wchar_p()
+        folder_path = None
 
         try:
-            # Show the dialog (no parent window)
-            hr = dialog.contents.lpVtbl.contents.Show(dialog, None)
-        except WindowsError as e:
-            # Handle the case where user cancels the dialog (HRESULT 0x800704C7)
-            if e.winerror == ERROR_CANCELLED:
-                return None
-            else:
+            hr = ole32.CoCreateInstance(
+                byref(CLSID_FileOpenDialog), None, 1,
+                byref(IID_IFileOpenDialog), byref(pDialog)
+            )
+            check_hresult(hr)
+            dialog = cast(pDialog, LPFILEOPENDIALOG)
+
+            options = ctypes.c_ulong()
+            hr = dialog.contents.lpVtbl.contents.GetOptions(dialog, byref(options))
+            check_hresult(hr)
+
+            hr = dialog.contents.lpVtbl.contents.SetOptions(dialog, options.value | FOS_PICKFOLDERS)
+            check_hresult(hr)
+
+            try:
+                hr = dialog.contents.lpVtbl.contents.Show(dialog, None)
+            except OSError as e: 
+                # Note: WindowsError is merged into OSError in Python 3.3+
+                if e.winerror == ERROR_CANCELLED:
+                    return None
                 raise
 
-        # If dialog returned cancelled HRESULT, return None
-        if hr == ERROR_CANCELLED:
-            return None
-        check_hresult(hr)
+            if hr == ERROR_CANCELLED:
+                return None
+            check_hresult(hr)
 
-        # Get the selected item (should be a folder)
-        pItem = c_void_p()
-        hr = dialog.contents.lpVtbl.contents.GetResult(dialog, byref(pItem))
-        check_hresult(hr)
+            pItem = c_void_p()
+            hr = dialog.contents.lpVtbl.contents.GetResult(dialog, byref(pItem))
+            check_hresult(hr)
+            shell_item = cast(pItem, LPSHELLITEM)
 
-        shell_item = cast(pItem, LPSHELLITEM)
+            hr = shell_item.contents.lpVtbl.contents.GetDisplayName(
+                shell_item, SIGDN_FILESYSPATH, byref(pszName)
+            )
+            check_hresult(hr)
 
-        # Retrieve the full file system path from the shell item
-        pszName = c_wchar_p()
-        hr = shell_item.contents.lpVtbl.contents.GetDisplayName(
-            shell_item, SIGDN_FILESYSPATH, byref(pszName)
-        )
-        check_hresult(hr)
+            folder_path = pszName.value
 
-        folder_path = pszName.value
-
-        # Free memory allocated by Windows for the path string
-        ole32.CoTaskMemFree(pszName)
-
-        # Release COM interfaces
-        shell_item.contents.lpVtbl.contents.Release(shell_item)
-        dialog.contents.lpVtbl.contents.Release(dialog)
-
-        # Uninitialize COM library for this thread
-        ole32.CoUninitialize()
+        finally:
+            # Crucial: Always clean up COM resources in a finally block
+            if pszName:
+                ole32.CoTaskMemFree(pszName)
+            if shell_item:
+                shell_item.contents.lpVtbl.contents.Release(shell_item)
+            if dialog:
+                dialog.contents.lpVtbl.contents.Release(dialog)
+            
+            ole32.CoUninitialize()
 
         return folder_path
