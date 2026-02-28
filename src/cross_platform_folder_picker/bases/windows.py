@@ -317,7 +317,6 @@ class WindowsFolderPicker(AbstractFolderPicker):
             folder_path = pszName.value
 
         finally:
-            # Crucial: Always clean up COM resources in a finally block
             if pszName:
                 ole32.CoTaskMemFree(pszName)
             if shell_item:
